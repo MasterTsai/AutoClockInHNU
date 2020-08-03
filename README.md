@@ -1,5 +1,5 @@
 # AutoClockIn
-某大学fangkong系统自动打卡
+# HNU
 * Single User:
   默认对个人信息的第一位（首行）同学进行打卡。
 * Multiple Users:
