@@ -364,6 +364,8 @@ for ppl in range(0, num_ppl):
     # while confirm != 'y':
     #     confirm = input("请确认信息是否无误：[y/n]\n")
     # print("信息无误")
+    sleep(3)
+    
     driver.find_elements_by_xpath(
         '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/button')[0].click()
 
