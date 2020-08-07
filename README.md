@@ -1,7 +1,7 @@
 # AutoClockIn
 
 * Single User:
-  默认对个人信息的第一位（首行）同学进行打卡。
+  对指定的某个同学进行打卡。
 * Multiple Users:
   允许多人打卡。
 * AutoRun.bat:
