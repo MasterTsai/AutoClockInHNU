@@ -373,10 +373,9 @@ for t in range(5):
         sleep(3)
         driver.find_elements_by_xpath(
             '//*[@id="app"]/div/div[2]/div[1]/div/div/div/div[1]'
-        )
+        )[0].click()
 
         # 打卡成功
-        sleep(2)
         clock_in_successfully()
         driver.save_screenshot(screenshot_name)
         # 退出
@@ -386,7 +385,9 @@ for t in range(5):
         # 发邮件
         send_main()
         break
+
     except:
         print(your_name, '第' + str(t + 1) + '次打卡失败')
+        print("垃圾玩意儿！")
         if t+1 == 5:
             print(your_name, '5次打卡都失败，请手动打卡！')
