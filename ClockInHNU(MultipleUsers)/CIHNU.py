@@ -63,7 +63,8 @@ def get_info():
 def clock_in_successfully():
     datetime_now = datetime.now()
     print(datetime_now, your_name + "打卡成功", sep=" ")
-    today_log = '\n' + str(datetime_now) + " ==> " + your_name + "打卡成功"
+    today_log = '\n' + str(datetime_now) + \
+                " ==> " + your_name + "第" + str(t + 1) + "打卡成功"
     with open("./打卡日志.txt", "a") as f:
         f.write(today_log)
         f.close()
@@ -99,7 +100,7 @@ def processing_image():
     img = pic_crop.convert("L")  # 转灰度
     pixdata = img.load()
     w, h = img.size
-    threshold = 204  # 该阈值不适合所有验证码，具体阈值请根据验证码情况设置
+    threshold = 200  # 该阈值不适合所有验证码，具体阈值请根据验证码情况设置
     # 遍历所有像素，大于阈值的为黑色
     for y in range(h):
         for x in range(w):
@@ -154,6 +155,7 @@ def img_name():
     date_today = str(date.today())
     screenshot_name = date_today + your_name + '打卡.png'
     return date_today, screenshot_name
+
 
 #######################################
 ###########Send Emails#################
@@ -248,134 +250,143 @@ for ppl in range(start-1, num_ppl):
     ######################################
     ######################################
     # 开始打卡
-    print(your_name, '开始打卡')
-    # executable_path是chromedriver.exe(自行下载)的位置
-    # options 设置
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
-    chrome_options.add_argument(
-        'user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"'
-    )
-    driver = webdriver.Chrome(executable_path=executable_path, options=chrome_options)
-
-    driver.maximize_window()
-    driver.get(url)
-
-    sleep(3)
-
-    # 自动输入学号和密码
-    driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[1]/input')[0].send_keys(your_id)
-    driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[2]/input')[0].send_keys(your_password)
-    # driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/button')[0].click()
-    sleep(3)
-
-    for i in range(10):
+    for t in range(5):
         try:
-            # 获取验证码 处理验证码
-            print('第%i次尝试' % (i + 1))
-            driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[4]')[0].click()
+            print(your_name, '第'+str(t+1)+'次打卡')
+            # executable_path是chromedriver.exe(自行下载)的位置
+            # options 设置
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
+            chrome_options.add_argument(
+                'user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"'
+            )
+            driver = webdriver.Chrome(executable_path=executable_path, options=chrome_options)
 
-            sleep(1)
+            driver.maximize_window()
+            driver.get(url)
 
-            img = processing_image()
-            # img.show()
-            vcode = image_str()
-            print(vcode)
+            sleep(3)
 
-            sleep(1)
-            # 输入验证码
-            driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[3]/div/input')[0].send_keys(vcode)
-            sleep(1)
-            # 点击确认
-            driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/button')[0].click()
+            # 自动输入学号和密码
+            driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[1]/input')[0].send_keys(your_id)
+            driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[2]/input')[0].send_keys(your_password)
+            # driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/button')[0].click()
+            sleep(3)
+
+            for i in range(10):
+                try:
+                    # 获取验证码 处理验证码
+                    print('第%i次尝试' % (i + 1))
+                    driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[4]')[0].click()
+
+                    sleep(1)
+
+                    img = processing_image()
+                    # img.show()
+                    vcode = image_str()
+                    print(vcode)
+
+                    sleep(1)
+                    # 输入验证码
+                    driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/div[3]/div/input')[0].send_keys(vcode)
+                    sleep(1)
+                    # 点击确认
+                    driver.find_elements_by_xpath('//*[@id="app"]/div/div[3]/button')[0].click()
+                    sleep(2)
+
+                    # 进入第二个页面
+                    driver.find_elements_by_xpath(
+                        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[2]/div[3]/div[2]/div/input')[
+                        0].send_keys(your_address)
+                    print('第%i次尝试成功' % (i + 1))
+                    break
+
+                except:
+                    print('第%i次输入验证码失败' % (i + 1))
+                    # 清空对话框
+                    driver.find_element_by_xpath('//*[@id="app"]/div/div[3]/div[3]/div/input').clear()
+            if i == 10:
+                print("10次尝试都失败，请您手动登录！")
+
+            # 打开滚动条窗口
+            driver.find_element_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[2]/div[2]/i'
+            ).click()
+
             sleep(2)
 
-            # 进入第二个页面
+            temp = ''
+            i = 0
+            while temp != province_index:
+                i += 1
+                xpath_temp = '//*[@id="app"]/div/div[5]/div/div[2]/div[1]/ul/li[' + str(i) + ']'
+                temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
+                driver.find_elements_by_xpath(xpath_temp)[0].click()
+                sleep(0.2)
+            sleep(0.5)
+
+            temp = ''
+            i = 0
+            while temp != city_index:
+                i += 1
+                xpath_temp = '//*[@id="app"]/div/div[5]/div/div[2]/div[2]/ul/li[' + str(i) + ']'
+                temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
+                driver.find_elements_by_xpath(xpath_temp)[0].click()
+                sleep(0.2)
+            sleep(0.5)
+
+            temp = ''
+            i = 0
+            while temp != district_index:
+                i += 1
+                xpath_temp = '//*[@id="app"]/div/div[5]/div/div[2]/div[3]/ul/li[' + str(i) + ']'
+                temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
+                driver.find_elements_by_xpath(xpath_temp)[0].click()
+                sleep(0.2)
+
+            # 确定
             driver.find_elements_by_xpath(
-                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[2]/div[3]/div[2]/div/input')[
-                0].send_keys(your_address)
-            print('第%i次尝试成功' % (i + 1))
+                '//*[@id="app"]/div/div[5]/div/div[1]/button[2]')[0].click()
+            # 是或否
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[3]/div[2]/div[2]/div/i')[0].click()
+
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[4]/div[2]/div[1]/div/i')[0].click()
+
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[5]/div[2]/div[2]/div/i')[0].click()
+
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[6]/div[2]/div[2]/div/i')[0].click()
+
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[7]/div[2]/div[2]/div/i')[0].click()
+
+            # 按下确定前请确定信息填写是否无误，无误则输入y。
+            # confirm = ''
+            # while confirm != 'y':
+            #     confirm = input("请确认信息是否无误：[y/n]\n")
+            # print("信息无误")
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/button')[0].click()
+            sleep(2)
+            driver.find_elements_by_xpath(
+                '//*[@id="app"]/div/div[2]/div[1]/div/div/div/div[1]'
+            )
+            # 打卡成功
+            sleep(2)
+            clock_in_successfully()
+            driver.save_screenshot(screenshot_name)
+            # 退出
+            driver.quit()
+            # 打卡完毕
+            print(your_name, '第'+str(t+1)+'次打卡成功')
+            # 发邮件
+            send_main()
             break
+
         except:
-            print('第%i次输入验证码失败' % (i + 1))
-            i += 1
-            # 清空对话框
-            driver.find_element_by_xpath('//*[@id="app"]/div/div[3]/div[3]/div/input').clear()
-    if i == 10:
-        print("10次尝试都失败，请您手动登录！")
-
-    # 打开滚动条窗口
-    driver.find_element_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[2]/div[2]/i'
-    ).click()
-
-    sleep(2)
-
-    temp = ''
-    i = 0
-    while temp != province_index:
-        i += 1
-        xpath_temp = '//*[@id="app"]/div/div[5]/div/div[2]/div[1]/ul/li[' + str(i) + ']'
-        temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
-        driver.find_elements_by_xpath(xpath_temp)[0].click()
-        sleep(0.2)
-    sleep(0.5)
-
-    temp = ''
-    i = 0
-    while temp != city_index:
-        i += 1
-        xpath_temp = '//*[@id="app"]/div/div[5]/div/div[2]/div[2]/ul/li[' + str(i) + ']'
-        temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
-        driver.find_elements_by_xpath(xpath_temp)[0].click()
-        sleep(0.2)
-    sleep(0.5)
-
-    temp = ''
-    i = 0
-    while temp != district_index:
-        i += 1
-        xpath_temp = '//*[@id="app"]/div/div[5]/div/div[2]/div[3]/ul/li[' + str(i) + ']'
-        temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
-        driver.find_elements_by_xpath(xpath_temp)[0].click()
-        sleep(0.2)
-
-    # 确定
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[5]/div/div[1]/button[2]')[0].click()
-    # 是或否
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[3]/div[2]/div[2]/div/i')[0].click()
-
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[4]/div[2]/div[1]/div/i')[0].click()
-
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[5]/div[2]/div[2]/div/i')[0].click()
-
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[6]/div[2]/div[2]/div/i')[0].click()
-
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[7]/div[2]/div[2]/div/i')[0].click()
-
-    # 按下确定前请确定信息填写是否无误，无误则输入y。
-    # confirm = ''
-    # while confirm != 'y':
-    #     confirm = input("请确认信息是否无误：[y/n]\n")
-    # print("信息无误")
-    sleep(3)
-    
-    driver.find_elements_by_xpath(
-        '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/button')[0].click()
-
-    # 打卡成功
-    sleep(3)
-    clock_in_successfully()
-    driver.save_screenshot(screenshot_name)
-    # 退出
-    driver.quit()
-    # 打卡完毕
-    print(your_name, '打卡完毕')
-    # 发邮件
-    send_main()
+            print(your_name, '第'+str(t+1)+'次打卡失败')
+            if t+1 == 5:
+                print(your_name, '5次打卡都失败，请手动打卡！')
