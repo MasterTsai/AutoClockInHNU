@@ -64,10 +64,8 @@ def clock_in_successfully():
     datetime_now = datetime.now()
     print(datetime_now, your_name + "打卡成功", sep=" ")
     today_log = '\n' + str(datetime_now) + \
-                " ==> " + your_name + "第" + str(t + 1) + "打卡成功"
-    with open("./打卡日志.txt", "a") as f:
-        f.write(today_log)
-        f.close()
+                " ==> " + your_name + "第" + str(t + 1) + "次打卡成功"
+    return today_log
 
 
 # 获取验证码坐标
@@ -378,7 +376,8 @@ for t in range(5):
         )[0].click()
 
         # 打卡成功
-        clock_in_successfully()
+        temp = clock_in_successfully()
+        
         driver.save_screenshot(screenshot_name)
         # 退出
         driver.quit()
@@ -393,3 +392,7 @@ for t in range(5):
         print("垃圾玩意儿！")
         if t+1 == 5:
             print(your_name, '5次打卡都失败，请手动打卡！')
+
+with open("./打卡日志.txt", "a") as f:
+    f.write(today_log)
+    f.close()
