@@ -346,6 +346,8 @@ for t in range(5):
         # 确定
         driver.find_elements_by_xpath(
             '//*[@id="app"]/div/div[5]/div/div[1]/button[2]')[0].click()
+        sleep(0.5)
+        
         # 是或否
         driver.find_elements_by_xpath(
             '//*[@id="app"]/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/div[3]/div[2]/div[2]/div/i')[0].click()
