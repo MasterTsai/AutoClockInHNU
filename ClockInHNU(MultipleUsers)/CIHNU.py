@@ -343,6 +343,7 @@ for ppl in range(start-1, num_ppl):
                 temp = driver.find_element_by_xpath(xpath_temp).get_attribute('textContent')
                 driver.find_elements_by_xpath(xpath_temp)[0].click()
                 sleep(0.2)
+            sleep(0.5)
 
             # 确定
             driver.find_elements_by_xpath(
