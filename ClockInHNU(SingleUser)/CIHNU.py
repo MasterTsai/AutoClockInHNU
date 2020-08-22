@@ -212,13 +212,13 @@ def send_message(file_path):
     # 万国码 utf-8 全世界通用
     msg['Subject'] = Header(subject, 'utf-8')
 
-    # 2. 从哪来
+    # 2. 
     msg['From'] = from_email
 
-    # 3. 去哪里
+    # 3. 
     msg['To'] = to_email
 
-    # 看不到 需要渲染
+    # 渲染
     msg.attach(MIMEText(date_today + '打卡成功', 'html', 'utf-8'))
 
     # 文件路径 picture.jpg 关联
