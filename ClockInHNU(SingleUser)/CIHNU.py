@@ -166,7 +166,7 @@ def loc(date):
     else:
         weekday = today + 2
     # 判断是第几个星期
-    location = round((date-weekday)/7 + 1) * 7 + weekday
+    location = int((date-weekday)/7 + 1) * 7 + weekday
     return location
     
             
