@@ -28,10 +28,10 @@ from win32.lib import win32con
 from random import random
 
 
-## 随机体温 36°~36.5°
+## 随机体温 36°~37°
 def rd_body_temp():
-    yesterday_temp = 36 + round(0.5*random(), 1)
-    today_temp = 36 + round(0.5*random(), 1)
+    yesterday_temp = 36 + round(random(), 1)
+    today_temp = 36 + round(random(), 1)
     return yesterday_temp, today_temp
 
 
