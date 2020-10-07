@@ -444,7 +444,7 @@ if __name__ == '__main__':
                     break
                 else:
                     print(your_name, '第'+str(t+1)+'次打卡失败')
-                    print("垃圾玩意儿！")
+                   
                     if t+1 == 5:
                         print(your_name, '5次打卡都失败，请手动打卡！')
                     
