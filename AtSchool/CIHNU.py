@@ -309,14 +309,6 @@ for ppl in cl_list:
     your_id = per_data.loc[ppl, "学号"]
     # 你的密码
     your_password = per_data.loc[ppl, "密码"]
-    # 省份
-    province_index = per_data.loc[ppl, "省份"]
-    # 城市
-    city_index = per_data.loc[ppl, "城市"]
-    # 镇/区
-    district_index = per_data.loc[ppl, "镇区"]
-    # 详细地址
-    your_address = per_data.loc[ppl, "地址"]
     # executable_path
     executable_path = per_data.loc[ppl, "chromedriver路径"]
     # 体温
