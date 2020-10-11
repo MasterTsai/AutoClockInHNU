@@ -6,4 +6,4 @@
 * AtSchool
   随机生成体温(36.0°~37.0°)，并打卡。
 
-https://digi.bib.uni-mannheim.de/tesseract/ 下载tesseract用于识别验证码。下载tesseract后，还需将应用程序文件夹加入环境变量。
+https://digi.bib.uni-mannheim.de/tesseract/ 下载tesseract用于识别验证码。下载tesseract后，还需将~\tesseract\tessdata\加入系统环境变量。
