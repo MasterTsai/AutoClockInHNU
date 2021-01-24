@@ -18,5 +18,5 @@
   * 新版的Edge驱动程序webdriver下载地址：https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/#downloads
   * Chrome浏览器的驱动程序chromedriver下载地址：https://sites.google.com/a/chromium.org/chromedriver/downloads
 
-* 声明：
-  本打卡程序仅限于学习交流，请根据学校规定和自己的真实情况进行打卡，因违反学校规定造成的一切不良后果，皆与本人无关。
+* *声明：*
+  <u>*本打卡程序仅限于学习交流，请根据学校规定和自己的真实情况进行打卡，因违反学校规定造成的一切不良后果，皆与本人无关。*</u>
